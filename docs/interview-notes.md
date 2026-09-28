@@ -139,6 +139,19 @@ The bugs worth catching here are MySQL-specific: InnoDB row locks, isolation lev
 
 ---
 
+## Deployment
+
+**How is the live demo hosted for free?**
+React on Vercel, the Spring Boot image on Render's free plan, MySQL on Aiven's free plan. Vercel's rewrite proxies `/api` to Render server-side, so the browser sees one origin: the `SameSite=Strict` refresh cookie stays first-party and there's no CORS. Pointing the SPA straight at `onrender.com` would need `SameSite=None` cookies, which browsers increasingly block as third-party.
+
+**Why does the demo reset itself?**
+A shared demo gets vandalised: someone freezes the customer account or changes a demo password. The `demo` profile runs `flyway.clean()` then `migrate()` on startup (a `FlywayMigrationStrategy` bean). Render stops idle apps after 15 minutes, so every visitor after a quiet spell gets a fresh bank, and the seed's relative dates stay current. It's behind an explicit property that only the demo profile sets.
+
+**How did you deal with a 0.1-CPU instance?**
+I measured: startup cost about 12 CPU-seconds, so roughly two minutes on 0.1 CPU. Class Data Sharing (train once at image build with `spring.context.exit=onRefresh`, no database needed) cut that by about 25%. JVM flags (serial GC, C1-only JIT) and a smaller pool keep it inside 512 MB. The rest is UX: the frontend pings the API and explains the wait instead of spinning silently.
+
+---
+
 ## Trade-offs I'd mention unprompted
 
 - PAN and Aadhaar are masked but not encrypted at rest.

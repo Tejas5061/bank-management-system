@@ -1,0 +1,6 @@
+# Vercel only builds the frontend; the API is deployed to Render (render.yaml).
+backend/
+docs/
+.github/
+frontend/node_modules/
+frontend/dist/

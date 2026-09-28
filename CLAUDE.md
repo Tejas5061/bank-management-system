@@ -8,6 +8,7 @@ Guidance for AI coding assistants (and humans) working in this repository.
 - `frontend/`: React 18 + Vite + TypeScript + Tailwind 4. `src/api` (TanStack Query hooks per portal), `src/pages/{auth,customer,staff,admin,shared}`, `src/components`.
 - `docker-compose.yml`: MySQL 8.4, MailHog, backend, nginx frontend. `.env.example` lists every variable.
 - `docs/interview-notes.md`: the reasoning behind the non-obvious decisions. Read it before changing money, locking, auth or jobs.
+- Public demo: `vercel.json` (frontend + `/api` proxy), `render.yaml` (API, `prod,demo` profiles), `application-demo.yml`. See `docs/deployment.md`. The demo profile wipes and reseeds the database on every start, so never point it at real data.
 
 ## Commands
 

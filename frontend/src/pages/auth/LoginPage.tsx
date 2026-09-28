@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { HOME_BY_ROLE, useAuth } from '@/auth/useAuth';
+import { WakeNotice } from '@/components/WakeNotice';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Field';
 import { errorMessage } from '@/lib/errors';
@@ -46,6 +47,8 @@ export function LoginPage() {
     <AuthLayout>
       <h2 className="text-2xl font-semibold text-ink">Sign in</h2>
       <p className="mt-1 text-ink-soft">Use the email you registered with.</p>
+
+      <WakeNotice className="mt-6" />
 
       <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-4" noValidate>
         <Input label="Email" type="email" autoComplete="username" error={formState.errors.email?.message} {...register('email')} />

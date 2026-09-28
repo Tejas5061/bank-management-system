@@ -1,0 +1,40 @@
+# Render Blueprint for the public demo API (free plan). The frontend is on Vercel, which forwards
+# /api/* here (vercel.json), so the browser only ever talks to one origin. Setup: docs/deployment.md.
+services:
+  - type: web
+    name: kosh-bank-api
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /actuator/health/readiness
+    autoDeployTrigger: checksPass   # redeploy only after GitHub Actions CI passes
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod,demo            # prod security settings + demo data, reset on every start
+      - key: JWT_SECRET
+        generateValue: true         # random 256-bit Base64 key, created once by Render
+      # MySQL connection (Aiven free plan). Render asks for these when you create the Blueprint.
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_NAME
+        value: defaultdb
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://kosh-bank.vercel.app
+      # Short enough that a visitor can add a payee and pay them in one visit.
+      - key: BENEFICIARY_COOLING_PERIOD
+        value: 2m
+      # Free instance: 512 MB and 0.1 CPU. Smaller heap share, a single-threaded GC and C1-only JIT
+      # keep memory in bounds and cut CPU spent while starting.
+      - key: JDK_JAVA_OPTIONS
+        value: -XX:MaxRAMPercentage=60 -XX:+UseSerialGC -XX:TieredStopAtLevel=1 -Xss512k -XX:ReservedCodeCacheSize=48m -XX:+ExitOnOutOfMemoryError

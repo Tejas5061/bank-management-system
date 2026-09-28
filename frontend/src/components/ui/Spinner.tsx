@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { cn } from '@/lib/util';
 
 export function Spinner({ className }: { className?: string }) {
@@ -9,12 +10,15 @@ export function Spinner({ className }: { className?: string }) {
   );
 }
 
-export function FullPageSpinner({ label }: { label: string }) {
+export function FullPageSpinner({ label, children }: { label: string; children?: ReactNode }) {
   return (
-    <div className="grid min-h-dvh place-items-center" role="status">
-      <div className="flex items-center gap-3 text-ink-soft">
-        <Spinner />
-        <span>{label}</span>
+    <div className="grid min-h-dvh place-items-center px-5">
+      <div className="flex flex-col items-center">
+        <div className="flex items-center gap-3 text-ink-soft" role="status">
+          <Spinner />
+          <span>{label}</span>
+        </div>
+        {children}
       </div>
     </div>
   );

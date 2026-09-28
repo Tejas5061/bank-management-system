@@ -6,6 +6,17 @@ It covers the parts of banking software where correctness is hard: moving money 
 
 > All people, accounts and money in this project are fictitious. "Kosh" (कोष) means treasury.
 
+## Live demo
+
+**https://kosh-bank.vercel.app**: sign in with one of the demo buttons (customer, teller or admin). API docs: [Swagger UI](https://kosh-bank-api.onrender.com/swagger-ui.html).
+
+- The API runs on a free host that sleeps after 15 idle minutes. **The first visit takes a minute or two** while it wakes up (the page says so); after that it's quick.
+- The demo bank **resets to fresh data every time the server wakes**, so feel free to transfer, freeze accounts or approve loans.
+- Emails are switched off in the demo (free hosts block SMTP); notifications still appear in the app.
+- A new payee can receive money after 2 minutes in the demo (the cooling period is 30 minutes by default).
+
+How it's hosted (all free tiers): the React app on Vercel, the Spring Boot API as a Docker service on Render, MySQL on Aiven. Vercel forwards `/api` to Render, so the browser sees a single origin. See [docs/deployment.md](docs/deployment.md).
+
 ---
 
 ## What it does
