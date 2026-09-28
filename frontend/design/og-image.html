@@ -1,0 +1,73 @@
+<!doctype html>
+<!--
+  Source of public/og-image.png, the link-preview image LinkedIn, WhatsApp and others show for the
+  live demo. Regenerate (1200 x 627) with a headless Chromium browser, for example:
+    msedge --headless --hide-scrollbars --window-size=1200,627 --screenshot=public/og-image.png design/og-image.html
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500&display=block" rel="stylesheet" />
+<style>
+  :root {
+    --kosh-800: #0f3d3e; --kosh-900: #0a2b2c; --kosh-100: #d5e9e7; --kosh-200: #a9d2cd;
+    --paper: #f7faf8; --ink: #0f2a2b; --ink-soft: #4a5f5f; --ink-faint: #7b8c8b;
+    --rule: #d9e2dd; --rule-strong: #b9c8c1; --stamp: #5b3fc4; --credit: #0b7a4b; --debit: #b42318;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 627px; overflow: hidden; }
+  body {
+    background: radial-gradient(120% 90% at 85% 10%, #164f50 0%, var(--kosh-800) 45%, var(--kosh-900) 100%);
+    color: #eef2ef; font-family: 'Public Sans', sans-serif;
+    display: grid; grid-template-columns: 470px 1fr; gap: 36px; padding: 56px 64px;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .tile { width: 44px; height: 44px; border-radius: 10px; background: #eef2ef; color: var(--kosh-800); display: grid; place-items: center; }
+  .brand span { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 28px; }
+  h1 { margin-top: 64px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 54px; line-height: 1.02; letter-spacing: -0.02em; }
+  .lede { margin-top: 22px; font-size: 21px; line-height: 1.45; color: var(--kosh-100); max-width: 440px; }
+  .stack { position: absolute; left: 64px; bottom: 52px; font-family: 'IBM Plex Mono', monospace; font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--kosh-200); }
+  .book {
+    align-self: center; position: relative; background: var(--paper); color: var(--ink);
+    border-radius: 8px; padding: 26px 28px 34px; transform: rotate(-1.5deg);
+    box-shadow: 0 40px 70px -30px rgb(0 0 0 / 0.65);
+  }
+  .book header { display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint); }
+  .grid { display: grid; grid-template-columns: 56px minmax(0, 1fr) 84px 92px 104px; }
+  .head { margin-top: 16px; padding-bottom: 8px; border-bottom: 4px double var(--rule-strong); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+  .row { padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 14px; white-space: nowrap; }
+  .r { text-align: right; font-variant-numeric: tabular-nums; }
+  .date { color: var(--ink-soft); }
+  .out { color: var(--debit); } .in { color: var(--credit); } .bal { font-weight: 600; }
+  .stamp {
+    position: absolute; right: 28px; bottom: -16px; background: var(--paper); transform: rotate(-4deg);
+    padding: 6px 12px; border: 2px solid var(--stamp); border-radius: 4px;
+    box-shadow: inset 0 0 0 1.5px var(--paper), inset 0 0 0 2.5px var(--stamp);
+    color: var(--stamp); font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+  <section>
+    <div class="brand">
+      <div class="tile">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
+      </div>
+      <span>Kosh Bank</span>
+    </div>
+    <h1>Every rupee, entered the moment it moves.</h1>
+    <p class="lede">A full-stack banking demo with customer, teller and admin portals. Sign in with a demo account.</p>
+    <p class="stack">Java 21 · Spring Boot 3 · MySQL · React</p>
+  </section>
+
+  <div class="book">
+    <header><span>Savings A/c 0001 1000 0015</span><span>Page 14</span></header>
+    <div class="grid head"><span>Date</span><span>Particulars</span><span class="r">Withdr.</span><span class="r">Deposit</span><span class="r">Balance</span></div>
+    <div class="grid row"><span class="date">02 Sep</span><span>Salary - Nimbus Tech</span><span></span><span class="r in">85,000.00</span><span class="r bal">2,95,704.00</span></div>
+    <div class="grid row"><span class="date">07 Sep</span><span>House rent</span><span class="r out">18,000.00</span><span></span><span class="r bal">2,77,704.00</span></div>
+    <div class="grid row"><span class="date">12 Sep</span><span>Broadband bill</span><span class="r out">1,199.00</span><span></span><span class="r bal">2,76,505.00</span></div>
+    <div class="grid row"><span class="date">18 Sep</span><span>Fixed deposit interest</span><span></span><span class="r in">1,687.50</span><span class="r bal">2,78,192.50</span></div>
+    <span class="stamp">KYC verified · Fort branch</span>
+  </div>
+</body>
+</html>
