@@ -17,6 +17,7 @@ const listeners = new Set<() => void>();
 function startPinging() {
   if (started) return;
   started = true;
+  const startedAt = Date.now();
   const ping = async () => {
     try {
       const response = await fetch(PING_URL, { cache: 'no-store' });
@@ -28,7 +29,8 @@ function startPinging() {
     } catch {
       // Network error or proxy timeout while the host boots: try again below.
     }
-    window.setTimeout(() => void ping(), 4_000);
+    // Past the "stuck" point the notice asks the visitor to refresh; stop polling a dead server.
+    if (Date.now() - startedAt < STUCK_AFTER_MS) window.setTimeout(() => void ping(), 4_000);
   };
   void ping();
 }
