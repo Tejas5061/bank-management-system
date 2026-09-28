@@ -1,0 +1,5 @@
+target/
+scripts/
+.idea/
+*.iml
+.env

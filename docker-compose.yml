@@ -1,0 +1,70 @@
+# One command for the whole stack:  docker compose up --build
+#   App         http://localhost:3000   (nginx: SPA + /api proxy)
+#   API/Swagger http://localhost:8080/swagger-ui.html
+#   MailHog     http://localhost:8025   (every email the bank "sends" lands here)
+# Copy .env.example to .env first; compose refuses to start without the required secrets.
+
+name: bank-management-system
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-bankdb}
+      MYSQL_USER: ${DB_USERNAME:?Set DB_USERNAME in .env}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+      TZ: UTC
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # web inbox
+
+  backend:
+    build: ./backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    environment:
+      SPRING_PROFILES_ACTIVE: dev            # dev = demo seed data + Swagger UI
+      DB_URL: jdbc:mysql://mysql:3306/${DB_NAME:-bankdb}?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env (openssl rand -base64 48)}
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      COOKIE_SECURE: "false"                 # plain http on localhost
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173
+      SERVER_FORWARD_HEADERS_STRATEGY: native
+      BENEFICIARY_COOLING_PERIOD: ${BENEFICIARY_COOLING_PERIOD:-30m}
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_DEMO_MODE: "true"
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:80"
+
+volumes:
+  mysql-data:

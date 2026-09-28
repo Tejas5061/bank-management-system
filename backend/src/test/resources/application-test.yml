@@ -1,0 +1,30 @@
+# Integration tests. The datasource is supplied at runtime by AbstractIntegrationTest
+# (a Testcontainers MySQL, or an existing MySQL via IT_DB_URL).
+
+spring:
+  flyway:
+    locations: classpath:db/migration
+  jpa:
+    show-sql: false
+
+app:
+  security:
+    bcrypt-strength: 4            # fast hashing; production uses 12
+    jwt:
+      # Test-only key (Base64 of 48 random bytes). Real deployments set JWT_SECRET.
+      secret: dGVzdC1vbmx5LWtleS1kby1ub3QtdXNlLWluLXByb2R1Y3Rpb24tMDEyMzQ1Njc4OQ==
+    refresh-cookie:
+      secure: false
+  rate-limit:
+    auth-capacity: 1000
+  mail:
+    enabled: false
+  scheduling:
+    enabled: false
+  cors:
+    allowed-origins: http://localhost:5173
+
+logging:
+  level:
+    com.bankms: INFO
+    org.testcontainers: INFO

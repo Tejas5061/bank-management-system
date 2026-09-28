@@ -1,0 +1,36 @@
+# Production: every connection detail and secret comes from the environment; nothing has a default.
+# Demo seed data is NOT loaded. Create the first admin with BOOTSTRAP_ADMIN_EMAIL/PASSWORD.
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  flyway:
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
+
+server:
+  # Behind a reverse proxy / load balancer: trust X-Forwarded-* from internal networks only, so
+  # request.getRemoteAddr() (used for rate limiting and audit) is the real client address.
+  forward-headers-strategy: native
+
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:false}
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:false}
+
+app:
+  security:
+    refresh-cookie:
+      secure: ${COOKIE_SECURE:true}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+
+logging:
+  structured:
+    format:
+      console: ${LOG_FORMAT:ecs}
+  level:
+    root: INFO
+    com.bankms: INFO

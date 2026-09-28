@@ -1,0 +1,24 @@
+# Local development: MySQL + MailHog on localhost (docker compose up mysql mailhog),
+# demo seed data, Swagger UI, readable SQL logging.
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/bankdb?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+  jpa:
+    show-sql: false
+
+app:
+  security:
+    refresh-cookie:
+      secure: ${COOKIE_SECURE:false}   # plain http on localhost
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+logging:
+  level:
+    com.bankms: DEBUG
+    org.hibernate.SQL: ${SQL_LOG_LEVEL:INFO}

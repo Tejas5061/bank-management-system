@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+/*
+ * Kosh Bank design tokens.
+ * The visual language borrows from the Indian bank passbook: ruled ledger pages on cool
+ * security paper, identifiers printed in a mono face, and violet rubber-stamp ink for statuses.
+ */
+@theme {
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --color-ink: #0f2a2b;          /* body text: ledger ink */
+  --color-ink-soft: #4a5f5f;     /* secondary text */
+  --color-ink-faint: #7b8c8b;    /* captions, placeholders */
+  --color-paper: #eef2ef;        /* app background: security paper */
+  --color-surface: #ffffff;
+  --color-rule: #d9e2dd;         /* ledger ruling, borders */
+  --color-rule-strong: #b9c8c1;
+
+  --color-kosh-50: #eef6f5;
+  --color-kosh-100: #d5e9e7;
+  --color-kosh-200: #a9d2cd;
+  --color-kosh-500: #1f6f6c;
+  --color-kosh-600: #155e5c;
+  --color-kosh-700: #0f4a49;
+  --color-kosh-800: #0f3d3e;     /* brand */
+  --color-kosh-900: #0a2b2c;
+
+  --color-stamp: #5b3fc4;        /* rubber-stamp violet */
+  --color-stamp-soft: #efebfb;
+
+  --color-credit: #0b7a4b;
+  --color-credit-soft: #e5f4ec;
+  --color-debit: #b42318;
+  --color-debit-soft: #fdecea;
+  --color-caution: #a35200;
+  --color-caution-soft: #fdf1e2;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 0 rgb(15 42 43 / 0.04), 0 1px 3px rgb(15 42 43 / 0.06);
+  --shadow-lift: 0 10px 30px -12px rgb(15 42 43 / 0.25);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum' 0;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-kosh-500);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer components {
+  /* Figures in tables and balances line up in columns, like a printed passbook. */
+  .figures {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Passbook ruling: faint horizontal rules every row, a margin rule on the left. */
+  .ledger {
+    background-image: linear-gradient(to right, transparent 0 3px, var(--color-rule) 3px 4px, transparent 4px);
+    background-size: 100% 100%;
+  }
+
+  .ledger-row + .ledger-row {
+    border-top: 1px solid var(--color-rule);
+  }
+
+  /*
+   * The signature: a rubber-stamp status mark in violet ink, slightly rotated with a double
+   * border and a worn edge, the way branches stamp passbooks and forms.
+   */
+  .stamp {
+    --stamp-color: var(--color-stamp);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.2em 0.6em;
+    border: 2px solid var(--stamp-color);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1.5px var(--color-surface), inset 0 0 0 2.5px var(--stamp-color);
+    color: var(--stamp-color);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transform: rotate(-2.5deg);
+    mask-image: radial-gradient(circle at 30% 40%, #000 55%, rgb(0 0 0 / 0.82) 70%, #000 85%);
+    white-space: nowrap;
+  }
+
+  .stamp-land {
+    animation: stamp-land 380ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+}
+
+@keyframes stamp-land {
+  0% {
+    opacity: 0;
+    transform: rotate(-9deg) scale(1.6);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-2.5deg) scale(1);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-enter {
+  animation: rise 260ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-land,
+  .page-enter {
+    animation: none;
+  }
+}
